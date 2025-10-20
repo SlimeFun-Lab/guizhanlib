@@ -70,11 +70,6 @@ subprojects {
             create<MavenPublication>("maven") {
                 from(components["java"])
 
-                artifact(tasks.named("shadowJar").get())
-
-                artifact(tasks.named("javadocJar").get())
-                artifact(tasks.named("sourcesJar").get())
-
                 groupId = rootProject.group as String
                 artifactId = project.name
                 version = rootProject.version as String
@@ -110,15 +105,29 @@ subprojects {
     }
 
     signing {
-        val signingKey = System.getenv("SIGNING_KEY")
-        val signingPass = System.getenv("SIGNING_PASSWORD")
-        if (!signingKey.isNullOrBlank() && !signingPass.isNullOrBlank()) {
-            useInMemoryPgpKeys(signingKey, signingPass)
+        val key = System.getenv("SIGNING_KEY") ?: findProperty("signing.key") as String?
+        val pass = System.getenv("SIGNING_PASSWORD") ?: findProperty("signing.password") as String?
+
+        if (!key.isNullOrBlank() && !pass.isNullOrBlank()) {
+            useInMemoryPgpKeys(key, pass)
             sign(publishing.publications["maven"])
         } else {
             setRequired { false }
-            logger.lifecycle("Signing disabled (no SIGNING_KEY / SIGNING_PASSWORD)")
+            logger.lifecycle("Signing disabled (no PGP key/password)")
         }
+    }
+
+}
+
+tasks.matching { it.name == "generateMetadataFileForMavenPublication" }.configureEach {
+    dependsOn(tasks.named("jar"))
+    dependsOn(tasks.named("shadowJar"))
+}
+
+tasks.withType<org.gradle.plugins.signing.Sign>().configureEach {
+    onlyIf { signing.isRequired }
+    if (!signing.isRequired) {
+        enabled = false
     }
 }
 
