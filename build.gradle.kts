@@ -4,8 +4,8 @@ plugins {
     `java-library`
     `maven-publish`
     signing
-    id("io.freefair.lombok") version "8.13.1"
-    id("com.gradleup.shadow") version "8.3.6"
+    id("io.freefair.lombok") version "8.6"
+    id("com.gradleup.shadow") version "8.3.2"
     id("org.sonarqube") version "6.1.0.5360"
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
 }
@@ -16,8 +16,7 @@ allprojects {
     repositories {
         mavenCentral()
         maven("https://jitpack.io/")
-        maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-        maven("https://repo.papermc.io/repository/maven-public/")
+        maven(url = "https://repo.papermc.io/repository/maven-public/")
         maven("https://repo.alessiodp.com/releases/")
     }
 }
@@ -43,9 +42,9 @@ subprojects {
     }
 
     java {
-        disableAutoTargetJvm()
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(21))
+        }
         withJavadocJar()
         withSourcesJar()
     }
