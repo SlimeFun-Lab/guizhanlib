@@ -3,7 +3,8 @@ jdk:
 
 install:
   - ./gradlew :guizhanlib-slimefun:clean :guizhanlib-slimefun:shadowJar
+  - ls -la guizhanlib-slimefun/build/libs || true
 
 artifacts:
-  - path: guizhanlib-slimefun/build/libs/guizhanlib-slimefun-*.jar
+  - path: guizhanlib-slimefun/build/libs/*.jar
     type: jar
