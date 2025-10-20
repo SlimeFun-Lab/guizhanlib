@@ -2,4 +2,8 @@ jdk:
   - openjdk21
 
 install:
-  - ./gradlew :guizhanlib-slimefun:clean :guizhanlib-slimefun:build
+  - ./gradlew :guizhanlib-slimefun:clean :guizhanlib-slimefun:shadowJar
+
+artifacts:
+  - path: guizhanlib-slimefun/build/libs/guizhanlib-slimefun-*.jar
+    type: jar
