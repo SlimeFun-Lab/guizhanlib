@@ -54,7 +54,7 @@ subprojects {
     }
 
     tasks.withType<ShadowJar> {
-        archiveClassifier = ""
+        archiveClassifier.set("all")
     }
 
     sonar {
@@ -68,7 +68,9 @@ subprojects {
     publishing {
         publications {
             create<MavenPublication>("maven") {
-                from(components["shadow"])
+                from(components["java"])
+
+                artifact(tasks.named("shadowJar").get())
 
                 artifact(tasks.named("javadocJar").get())
                 artifact(tasks.named("sourcesJar").get())
