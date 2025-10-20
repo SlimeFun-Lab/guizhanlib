@@ -108,7 +108,15 @@ subprojects {
     }
 
     signing {
-        sign(publishing.publications["maven"])
+        val signingKey = System.getenv("SIGNING_KEY")
+        val signingPass = System.getenv("SIGNING_PASSWORD")
+        if (!signingKey.isNullOrBlank() && !signingPass.isNullOrBlank()) {
+            useInMemoryPgpKeys(signingKey, signingPass)
+            sign(publishing.publications["maven"])
+        } else {
+            setRequired { false }
+            logger.lifecycle("Signing disabled (no SIGNING_KEY / SIGNING_PASSWORD)")
+        }
     }
 }
 

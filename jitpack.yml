@@ -2,4 +2,4 @@ jdk:
   - openjdk21
 
 install:
-  - ./gradlew :guizhanlib-slimefun:clean :guizhanlib-slimefun:publishToMavenLocal -x test
+  - ./gradlew :guizhanlib-slimefun:clean :guizhanlib-slimefun:build
