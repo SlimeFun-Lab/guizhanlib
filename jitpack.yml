@@ -2,7 +2,4 @@ jdk:
   - openjdk21
 
 install:
-  - ./gradlew :guizhanlib-slimefun:clean :guizhanlib-slimefun:build :guizhanlib-slimefun:publishToMavenLocal
-
-after_success:
-  - ls -R ~/.m2/repository/net/guizhanss/guizhanlib-slimefun || true
+  - ./gradlew :guizhanlib-all:clean :guizhanlib-all:build :guizhanlib-all:publishToMavenLocal
